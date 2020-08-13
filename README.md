@@ -13,6 +13,7 @@ Miki量化框架
 ----	
 	1.内存最好16G以上
 	2.硬盘最好采用固态硬盘，1T~2T
+	3.注册jqdata或rqdata等第三方数据接口(有现成的就不要去爬虫啦)
 	
 框架架构：  
 ----
@@ -35,9 +36,11 @@ Miki量化框架
 	   * 6.types数据类型
 	   * 7.dataGenerator数据推送
 	   * 8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
-	4.运行前，建议配备一块1T-2T的固态硬盘，通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小大概150G左右，
-	  再通过generate_dataUnit函数生成cache推送数据，系统通过读取cache文件进行数据推送，  
-	  dataSQL.py的update_finance_data从api读取财务数据存储到本地。  
+	4.运行前：
+	  * 1.建议配备一块1T-2T的固态硬盘
+	  * 2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右，
+	  * 3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py通过读取cache文件进行数据推送，  
+	  * 4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地。  
 	5.阅读源码也可以对系统架构更熟悉  
 
 
