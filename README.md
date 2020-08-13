@@ -24,7 +24,7 @@ Miki量化框架
 	2.data为数据存储、接收、提取等功能的实现，实盘模式需要运行main.py文件  
 	3.strategy为策略实现模块，  
 	  1.新建py文件实现策略功能，   
-	  2.from system.trade.strategyVar import * 引入全局变量  
+	  2.策略开头通过 from system.trade.strategyVar import * 引入全局变量  
 	    initialize 实现策略的初始化，
 	    before_trading_start 每天开盘前运行，  
 	    handle_data 每分钟运行，
