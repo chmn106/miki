@@ -23,11 +23,11 @@ Miki量化框架
 	3.strategy为策略实现模块，  
 	  1.新建py文件实现策略功能，   
 	  2.from system.trade.strategyVar import * 引入全局变量  
-	      initialize实现策略的初始化，
-	      before_trading_start每天开盘前运行，  
-	      handle_data每分钟运行，
-	      after_trading_end每天收盘后运行，
-	      after_backtest_end回测结束后运行。  
+	    initialize实现策略的初始化，
+	    before_trading_start每天开盘前运行，  
+	    handle_data每分钟运行，
+	    after_trading_end每天收盘后运行，
+	    after_backtest_end回测结束后运行。  
 	3.trade主要包含：
 	   1.context上下文会话
 	   2.logger日志
