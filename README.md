@@ -26,7 +26,7 @@ Miki量化框架
 
 
 项目捐赠：
-
+	![image](https://github.com/chmn106/Miki/img.png)
 
 
 
