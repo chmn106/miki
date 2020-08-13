@@ -31,13 +31,13 @@ Miki量化框架
 	    after_trading_end 每天收盘后运行，
 	    after_backtest_end 回测结束后运行。  
 	3.trade主要包含：
-	   1.context 上下文会话
-	   2.logger 日志
-	   3.order 下单
-	   4.system 主引擎
-	   5.strategyVar 全局变量
-	   6.types 数据类型
-	   7.dataGenerator 数据推送
+	   1.context 上下文会话模块
+	   2.logger 日志模块
+	   3.order 下单模块
+	   4.system 主引擎模块
+	   5.strategyVar 全局变量模块
+	   6.types 数据类型模块
+	   7.dataGenerator 数据推送模块
 	   8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
 	4.运行前：
 	  1.建议配备一块1T-2T的固态硬盘
