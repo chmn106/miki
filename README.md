@@ -8,7 +8,7 @@ Miki量化框架
 
 框架架构：  
 	1.api为下单接口实现  
-	2.data为数据存储、接收、提取等功能的实现，实盘模式main.py文件开启  
+	2.data为数据存储、接收、提取等功能的实现，实盘模式需要运行main.py文件  
 	3.strategy为策略实现模块，新建py文件实现策略功能，  
 	  开头通过 from system.trade.strategyVar import * 引入全局变量，具体查看system/trade/strategyVar.py  
 	  策略主要有 initialize, before_trading_start, handle_data, after_trading_end, after_backtest_end这些函数  
