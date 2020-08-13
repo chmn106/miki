@@ -21,28 +21,28 @@ Miki量化框架
 	1.api为下单接口实现  
 	2.data为数据存储、接收、提取等功能的实现，实盘模式需要运行main.py文件  
 	3.strategy为策略实现模块，  
-	  * 1.新建py文件实现策略功能，   
-	  * 2.from system.trade.strategyVar import * 引入全局变量  
+	  1.新建py文件实现策略功能，   
+	  2.from system.trade.strategyVar import * 引入全局变量  
 	      initialize实现策略的初始化，
 	      before_trading_start每天开盘前运行，  
 	      handle_data每分钟运行，
 	      after_trading_end每天收盘后运行，
 	      after_backtest_end回测结束后运行。  
 	3.trade主要包含：
-	   * 1.context上下文会话
-	   * 2.logger日志
-	   * 3.order下单
-	   * 4.system主引擎
-	   * 5.strategyVar全局变量
-	   * 6.types数据类型
-	   * 7.dataGenerator数据推送
-	   * 8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
+	   1.context上下文会话
+	   2.logger日志
+	   3.order下单
+	   4.system主引擎
+	   5.strategyVar全局变量
+	   6.types数据类型
+	   7.dataGenerator数据推送
+	   8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
 	4.运行前：
-	  * 1.建议配备一块1T-2T的固态硬盘
-	  * 2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右，
-	  * 3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py读取cache文件进行数据推送，  
-	  * 4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地。  
-	  * 5.实盘运行data文件夹的main.py，api文件夹的orderPool.py，SimTrade.py等文件。
+	  1.建议配备一块1T-2T的固态硬盘
+	  2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右，
+	  3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py读取cache文件进行数据推送，  
+	  4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地。  
+	  5.实盘运行data文件夹的main.py，api文件夹的orderPool.py，SimTrade.py等文件。
 	5.有问题通过阅读源码也可以对系统架构更熟悉  
 
 
