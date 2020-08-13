@@ -41,7 +41,7 @@ Miki量化框架
 	  * 2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右，
 	  * 3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py通过读取cache文件进行数据推送，  
 	  * 4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地。  
-	5.阅读源码也可以对系统架构更熟悉  
+	5.有问题通过阅读源码也可以对系统架构更熟悉  
 
 
 项目捐赠：  
