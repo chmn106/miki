@@ -25,9 +25,7 @@ Miki量化框架
 	6.阅读源码也可以对系统架构更熟悉
 
 
-项目捐赠：
-	![image](https://github.com/chmn106/Miki/img.png)
-
+项目捐赠：支付宝账号：15012463435
 
 
 
