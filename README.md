@@ -39,9 +39,9 @@ Miki量化框架
 	   5.strategyVar 全局变量模块
 	   6.types 数据类型模块
 	   7.dataGenerator 数据推送模块		
-	   8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
+	   8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位  
 	4.others为其它模块：
-	   1.technical 实现一些常见技术指标的计算
+	   1.technical 实现一些常见技术指标的计算，如Boll、Macd、Kdj等
 	5.运行前：
 	  1.建议配备一块1T-2T的固态硬盘  
 	  2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右  
