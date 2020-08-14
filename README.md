@@ -37,15 +37,17 @@ Miki量化框架
 	   4.system 主引擎模块
 	   5.strategyVar 全局变量模块
 	   6.types 数据类型模块
-	   7.dataGenerator 数据推送模块
+	   7.dataGenerator 数据推送模块		
 	   8.others.yaml为一些配置，ChangeDict为公司股票更名信息，Multiplier为期货合约单位。   
-	4.运行前：
+	4.others为其它模块：
+	   1.technical 实现一些常见技术指标的计算
+	5.运行前：
 	  1.建议配备一块1T-2T的固态硬盘  
 	  2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右  
 	  3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py读取cache文件进行数据推送    
 	  4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地  
 	  5.实盘运行data文件夹的main.py实现数据接收，api文件夹的orderPool.py实现api接口下单，SimTrade.py实现策略运行  
-	5.有问题通过阅读源码也可以对系统架构更熟悉  
+	6.有问题通过阅读源码也可以对系统架构更熟悉  
 
 
 项目捐赠：  
