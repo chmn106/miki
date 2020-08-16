@@ -24,7 +24,7 @@ Miki量化框架
 	    handle_data 每分钟运行，
 	    after_trading_end 每天收盘后运行，
 	    after_backtest_end 回测结束后运行。  
-	3.trade主要包含：
+	4.trade主要包含：
 	   1.context 上下文会话模块
 	   2.logger 日志模块
 	   3.order 下单模块
@@ -33,15 +33,15 @@ Miki量化框架
 	   6.types 数据类型模块
 	   7.dataGenerator 数据推送模块		
 	   8.others.yaml为一些配置，ChangeDict为股票更名信息，Multiplier为期货合约单位  
-	4.others为其它模块：
+	5.others为其它模块：
 	   1.technical 实现一些常见技术指标的计算，如Boll、Macd、Kdj等
-	5.运行前：
+	6.运行前：
 	  1.建议配备一块1T-2T的固态硬盘  
 	  2.通过dataOthers.py的save_old_data存储行情数据到本地，缓存大小10年大概150G左右  
 	  3.通过dataOthers.py的generate_dataUnit函数生成cache推送数据，dataGenerator.py读取cache文件进行数据推送    
 	  4.dataSQL.py的update_finance_data从api读取财务数据等存储到本地  
 	  5.实盘运行data文件夹的main.py实现数据接收，api文件夹的orderPool.py实现api接口下单，SimTrade.py实现策略运行  
-	6.有问题通过阅读源码也可以对系统架构更熟悉  
+	7.有问题通过阅读源码也可以对系统架构更熟悉  
 
 
 项目捐赠：  
