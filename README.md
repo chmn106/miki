@@ -32,7 +32,8 @@ Miki量化框架
 	   5.strategyVar 全局变量模块
 	   6.types 数据类型模块
 	   7.dataGenerator 数据推送模块		
-	   8.others.yaml为一些配置，ChangeDict为股票更名信息，Multiplier为期货合约单位  
+	   8.others.yaml为一些配置，ChangeDict为股票更名信息，Multiplier为期货合约单位 
+	   9.factor 因子模块，包括财务因子和量价因子
 	5.others为其它模块：
 	   1.technical 实现一些常见技术指标的计算，如Boll、Macd、Kdj等
 	6.运行前：
