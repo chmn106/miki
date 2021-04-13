@@ -1,13 +1,10 @@
-bcolz==1.2.1
-h5py==2.8.0
-numpy==1.14.5
-pandas==0.24.1
-pymysql
+numpy
+pandas
+pyecharts
 redis
-yaml
+bcolz
 jqdatasdk
-sqlalchemy
-shutil
+
 
 
 
