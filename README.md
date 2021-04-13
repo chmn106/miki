@@ -5,7 +5,7 @@ miki是一个开源量化框架，它具有以下特点
 + 优雅性： 框架简单
 + 拓展性： 支持股票、期货等
 
-## Installation
+## 安装
 ```
 pip install miki
 ```
