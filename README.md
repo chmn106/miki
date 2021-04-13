@@ -1,7 +1,7 @@
 # miki  ![](https://img.shields.io/badge/license-MIT-blue) ![](https://img.shields.io/badge/miki-v2.0.0-blue)
 
 miki是一个开源量化框架，它具有以下特点
-+ 简单性： 代码采用python，便于阅读理解
++ 简单性： 代码采用python
 + 优雅性： 框架简单，具体API阅读源码
 + 拓展性： 支持股票、期货等
 
