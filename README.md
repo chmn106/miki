@@ -49,11 +49,11 @@ class Strategy(Schedule):
 		self.query = Query()
 	def init_context(self):
 		g.context.set_order_cost(OrderCost(open_tax=0,
-										   close_tax=0.001,
-										   open_commission=0.0003,
-										   close_commission=0.0003,
-										   close_today_commission=0,
-										   min_commission=5), 'stocks')
+						   close_tax=0.001,
+						   open_commission=0.0003,
+						   close_commission=0.0003,
+						   close_today_commission=0,
+						   min_commission=5), 'stocks')
 		g.context.set_slippage(PriceRelatedSlippage(0.002), 'stocks')
 	def update_data(self, now_time):
 		# 挂载回测数据
