@@ -1,4 +1,4 @@
-# miki  ![](https://img.shields.io/badge/license-MIT-blue) ![](https://img.shields.io/badge/miki-v2.0.0-blue)
+# miki  ![](https://img.shields.io/badge/license-MIT-blue) ![](https://img.shields.io/badge/miki-v2.0.1-blue)
 
 miki是一个开源量化框架，它具有以下特点
 + 简单性： 代码采用python
