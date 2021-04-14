@@ -111,5 +111,7 @@ if __name__ == '__main__':
 	s.run()
 
 ```
+## 交流
+QQ群：1042883511
 ## License
 MIT License
