@@ -7,8 +7,8 @@ miki是一个开源量化框架，它具有以下特点
 
 ## 安装
 ```
-安装redis
-pip install miki==2.0.1
+1.安装redis
+2.pip install miki==2.0.1
 ```
 ## 数据存储
 ```js
