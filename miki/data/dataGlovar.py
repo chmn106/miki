@@ -1,0 +1,12 @@
+
+
+
+
+
+types = ['stock','index']
+
+
+
+
+
+
