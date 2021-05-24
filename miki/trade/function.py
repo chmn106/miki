@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import os, pickle, pyecharts, yaml
-from miki.trade import glovar as g
 
 
 class TradeFunction(object):
@@ -150,7 +149,7 @@ class TradeFunction(object):
 		if open_file:
 			os.startfile(os.path.abspath('{}/result.html'.format(save_path)))
 	@staticmethod
-	def plot_portfolio(context, now_time, save_path, redisCon, display_name=None):
+	def plot_portfolio(context, now_time, save_path, display_name=None):
 		# 显示持仓
 		os.makedirs(save_path, exist_ok=True)
 		portfolioDict = context.portfolioDict
@@ -182,29 +181,14 @@ class TradeFunction(object):
 				rows.append([security, name, position_amount, init_time, returns_rate, hold_rate1, hold_rate2, key])
 		day_return = total_value/preDayValue-1	
 		position_rate = hold_value/total_value
-		total_return = total_value/starting_cash-1
 		now_time = now_time.strftime('%Y-%m-%d %H:%M:%S')
 		title = '{} 当天收益率：{:.2%} 总资产：{:.0f} 持仓比率：{:.2%} 持股{}只'.format(now_time, day_return, total_value, position_rate, hold_num)
-		redisCon.set('positions_{}'.format(context.run_params['name']), pickle.dumps(rows))
-		redisCon.set('portfolio_{}'.format(context.run_params['name']), pickle.dumps([total_return, position_rate, day_return]))
-		data = []
-		for order in context.orderHistory:
-			if order.filled>0:
-				if display_name is not None and order.security in display_name:
-					name = display_name[order.security]
-				else:
-					name = order.security
-				data.append([name,
-							 order.filled,
-							 order.add_time,
-							 '买' if order.is_buy else '卖',
-							 int(order.profit)])
-		redisCon.set('order_history_'+context.run_params['name'], pickle.dumps(data))
 		
 		table = pyecharts.components.Table()
 		table.add(headers, rows)
 		table.set_global_opts(title_opts=pyecharts.options.ComponentTitleOpts(title=title))
 		table.render('{}/持仓.html'.format(save_path))
+
 
 
 

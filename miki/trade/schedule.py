@@ -1,10 +1,10 @@
 from miki.trade import glovar as g
-from miki.trade.context import Context
+from miki.trade.context import Context, Portfolio
 from miki.trade.logger import Logger
 from miki.trade.function import TradeFunction
 from datetime import datetime, timedelta
 import pandas as pd
-import pickle, os, time, redis
+import pickle, os, time
 
 
 class Schedule(object):
@@ -13,17 +13,41 @@ class Schedule(object):
 		self.save_path = run_params['file_path']+'/file/{}.pkl'.format(run_params['name'])
 		self.img_path = run_params['file_path']+'/img/{}/{}'.format(run_params['mode'], run_params['name'])
 		self.log_path = run_params['file_path']+'/log/{}/{}'.format(run_params['mode'], run_params['name'])
+		g.run_params = run_params
 		if run_params['mode']=='sim_trade' and os.path.exists(self.save_path):
 			with open(self.save_path, 'rb') as f:
-				g.context = pickle.load(f)
+				context = pickle.load(f)
+			g.context = self.__reload(context)
 			g.log = Logger(path=self.log_path, clear_log=False)
 		else:
 			g.context = Context(run_params=run_params)
 			g.log = Logger(path=self.log_path, clear_log=True)
 			self.init_context()
 			g.log.info('init context')
-		g.run_params = run_params
-		g.redisCon = redis.StrictRedis(host='127.0.0.1')
+
+	def __reload(self, old_context):
+		context = Context(run_params=g.run_params)
+		context.current_dt = old_context.current_dt
+		context.close_series = old_context.close_series
+		context.run_before_trading_start = old_context.run_before_trading_start
+		context.run_after_trading_end = old_context.run_after_trading_end
+		context.orderHistory = old_context.orderHistory
+		context.valueHistory = old_context.valueHistory
+		context._cashForPortfolio = old_context._cashForPortfolio
+		context._preDayValue = old_context._preDayValue
+		context.g = old_context.g
+		for types in old_context._portfolios:
+			if types not in context._portfolios:
+				context._portfolios[types] = Portfolio(init_cash=old_context.starting_cash, types=types)
+			context._portfolios[types]._starting_cash = old_context._portfolios[types]._starting_cash
+			context._portfolios[types]._available_cash = old_context._portfolios[types]._available_cash
+			context._portfolios[types]._preDayValue = old_context._portfolios[types]._preDayValue
+			context._portfolios[types].run_count = old_context._portfolios[types].run_count
+			context._portfolios[types].close_series = old_context._portfolios[types].close_series
+			context._portfolios[types].factor_series = old_context._portfolios[types].factor_series
+			context._portfolios[types].now_time = old_context._portfolios[types].now_time
+			context._portfolios[types].positions = old_context._portfolios[types].positions
+		return context
 
 	def init_context(self):
 		# 初始化运行一次
@@ -41,7 +65,7 @@ class Schedule(object):
 		# 回测结束运行
 		pass
 
-	def onMinute(self):
+	def onData(self):
 		pass
 
 	def update_data(self, now_time):
@@ -79,8 +103,8 @@ class Schedule(object):
 				self.before_trading_start()
 				now_date = now_time.date()
 			self.is_tradeable(now_time)
-			g.context.onMinute(now_time)
-			self.onMinute()
+			g.context.onData(now_time)
+			self.onData()
 		self.after_backtest_end()
 		TradeFunction.plot_value(value_history=g.context.valueHistory,
 								 order_history=g.context.orderHistory,
@@ -116,14 +140,13 @@ class Schedule(object):
 					fetch_data = self.update_data(now_time)
 					if fetch_data:
 						self.is_tradeable(now_time)
-						g.context.onMinute(now_time)
-						self.onMinute()
+						g.context.onData(now_time)
+						self.onData()
 						with open(self.save_path, 'wb') as f:
 							pickle.dump(g.context, f)
 						TradeFunction.plot_portfolio(context=g.context,
 													 now_time=now_time,
 													 save_path=self.img_path,
-													 redisCon=g.redisCon,
 													 display_name=g.display_name)
 						TradeFunction.plot_value(value_history=g.context.valueHistory,
 												 order_history=g.context.orderHistory,

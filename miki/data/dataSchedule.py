@@ -59,25 +59,34 @@ class BasicSchedule(object):
 				time.sleep(3600)
 	
 class MikiData(BasicSchedule):
-	def __init__(self):
+	def __init__(self, **kwarg):
 		super(MikiData, self).__init__()
 		self.dataBcolz = DataBcolz()
 		self.dataFinance = DataFinance()
+		self.dataOthers = kwarg
 
 	def before_trading_start(self):
 		self.dataBcolz.before_trading_start()
 		print('run dataBcolz before_trading_start')		
 		self.dataFinance.before_trading_start()
 		print('run dataFinance before_trading_start')		
+		for key in self.dataOthers:
+			self.dataOthers[key].before_trading_start()
+			print('run {} before_trading_start'.format(key))
 
 	def run_every_minute(self):
 		self.dataBcolz.run_every_minute()
+		for key in self.dataOthers:
+			self.dataOthers[key].run_every_minute()
 		
 	def after_trading_end(self):
 		self.dataBcolz.after_trading_end()
 		print('run dataBcolz after_trading_end')
 		self.dataFinance.after_trading_end()
 		print('run dataFinance after_trading_end')		
+		for key in self.dataOthers:
+			self.dataOthers[key].after_trading_end()
+			print('run {} after_trading_end'.format(key))
 
 
 

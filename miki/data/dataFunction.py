@@ -1,11 +1,20 @@
 import pandas as pd 
 import numpy as np 
 from datetime import datetime, timedelta
-import bcolz, pickle, os
+import bcolz, pickle, os, pyecharts
 from miki.data import dataGlovar
 
 
 class DataFunction(object):
+	@staticmethod	
+	def to_pickle(data, path):
+		with open(path, 'wb') as f:
+			pickle.dump(data, f)
+	@staticmethod
+	def from_pickle(path):
+		with open(path, 'rb') as f:
+			data = pickle.load(f)
+		return data
 	@staticmethod
 	def get_path(security, unit='1m'):
 		# 存储路径设置
@@ -68,3 +77,39 @@ class DataFunction(object):
 		field_list = ['date','factor','open','high','low','close','volume','high_limit','low_limit','paused']
 		redisCon.set(now_time, pickle.dumps([now_data, security_list, field_list]))
 		redisCon.expire(now_time, 60*60*24)
+	@staticmethod
+	def reshape(df, unit):
+		# dataframe格式数据周期重组
+		how = {'date':'last','open':'first','high':'max','low':'min','close':'last','volume':'sum'}
+		df['date'] = df.index.values
+		if unit in ['5m','15m','30m','60m','120m']:
+			df = df.groupby(np.array(range(len(df)))//int(unit[:-1]))
+		elif unit=='1d':
+			df = df.groupby(lambda x:x.year+x.month*0.01+x.day*0.0001)
+		elif unit=='1W':
+			df = df.groupby(lambda x:x.year+x.week*0.01)
+		elif unit=='1M':
+			df = df.groupby(lambda x:x.year+x.month*0.01)
+		else:
+			raise Exception('only 5m,15m,30m,60m,120m,1d,1W,1M unit is available')
+		df = df.agg(how).set_index('date')
+		return df
+	@staticmethod
+	def show_kline(df):
+		# 将股票数据进行K线展示
+		y_data = df[['open','close','low','high']].values.tolist()
+		x_data = [str(i) for i in df.index]
+		opts = pyecharts.options
+		kline = pyecharts.charts.Kline()
+		kline.add_xaxis(x_data)
+		kline.add_yaxis("kline", y_data)
+		kline.set_global_opts(title_opts=opts.TitleOpts(title='Kline'),
+		                      xaxis_opts=opts.AxisOpts(is_scale=True),
+		                      yaxis_opts=opts.AxisOpts(is_scale=True,splitarea_opts=opts.SplitAreaOpts(is_show=True, areastyle_opts=opts.AreaStyleOpts(opacity=1))),
+		                      datazoom_opts=[opts.DataZoomOpts()])
+		kline.render('kline.html')
+		os.startfile('kline.html')
+
+
+
+		

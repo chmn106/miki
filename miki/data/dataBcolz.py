@@ -15,16 +15,32 @@ class DataBcolz(object):
 		self.check_today_data()
 
 	@staticmethod
-	def get_today_data(redisCon):
+	def get_today_data():
 		# 获取当天数据
 		today_data,security_list,field_list = [],[],[]
 		today_date_list = DataFunction.get_today_date_list()
 		for now_time in today_date_list:
 			key = now_time.strftime('%Y-%m-%d %H:%M:%S')
-			if key in redisCon:
-				now_data, security_list, field_list = pickle.loads(redisCon.get(key))
+			if key in dataGlovar.redisCon:
+				now_data, security_list, field_list = pickle.loads(dataGlovar.redisCon.get(key))
 				today_data.append(now_data)
-		return np.array(today_data), list(security_list), field_list
+		today_data,security_list,field_list = np.array(today_data), list(security_list), list(field_list)
+		today_data_1d = []
+		if len(today_data)>0:
+			d = today_data[-1,:,0]
+			f = today_data[-1,:,1]
+			o = today_data[0,:,2]
+			h = today_data[:,:,3].max(axis=0)
+			l = today_data[:,:,4].min(axis=0)
+			c = today_data[-1,:,5]
+			v = today_data[:,:,6].sum(axis=0)
+			hl = today_data[0,:,7]
+			ll = today_data[0,:,8]
+			p = today_data[0,:,9]
+			today_data_1d = np.stack([d,f,o,h,l,c,v,hl,ll,p], axis=-1)[np.newaxis,:,:]
+		dataGlovar.today_data_1m = [today_data, security_list, field_list]	
+		dataGlovar.today_data_1d = [today_data_1d, security_list, field_list]	
+		return today_data, security_list, field_list
 
 	def check_old_data(self, security_list):
 		# 历史数据补全	
@@ -52,7 +68,7 @@ class DataBcolz(object):
 
 	def check_today_data(self):
 		# 当天数据补全，用于盘中中断
-		if datetime.now().date() in self.dataApi.get_all_trade_days() and datetime.now().time()<pd.to_datetime('15:30:00').time():
+		if datetime.now().date() in self.dataApi.get_all_trade_days():
 			today_date_list = DataFunction.get_today_date_list()
 			self.time_list = []
 			for now_time in today_date_list:
@@ -110,6 +126,8 @@ class DataBcolz(object):
 	def before_trading_start(self):
 		self.dataApi.get_all_trade_days()
 		self.dataApi.get_all_securities()
+		dataGlovar.today_cache = {}
+		dataGlovar.today_time_list = {}
 
 	def run_every_minute(self):
 		data, security_list, now_time = self.dataApi.get_data(end_date=datetime.now())
@@ -122,7 +140,7 @@ class DataBcolz(object):
 					self.check_today_data()			
 
 	def after_trading_end(self):
-		today_data,security_list,field_list = DataBcolz.get_today_data(dataGlovar.redisCon)
+		today_data,security_list,field_list = DataBcolz.get_today_data()
 		if len(today_data) != 240:
 			raise Exception('wrong data length, shape {}'.format(today_data.shape))
 		array_minute, array_day, security_list = self.transform_data(today_data, security_list)

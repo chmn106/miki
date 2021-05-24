@@ -23,6 +23,14 @@ class DataApi(object):
 			pickle.dump(all_trade_days, f)
 		return all_trade_days
 
+	def get_valuation_data(self, name, date):
+		# 获取指标数据
+		if name=='valuation':
+			df = get_fundamentals(query(valuation), date=str(pd.to_datetime(date).date()))
+		elif name=='indicator':
+			df = get_fundamentals(query(indicator), date=str(pd.to_datetime(date).date()))
+		return df
+
 	def get_finance_data(self, types, start, end):
 		# 获取报表数据
 		start,end = pd.to_datetime(start).date(),pd.to_datetime(end).date()
@@ -86,12 +94,10 @@ class DataApi(object):
 					   panel=False)
 		now_time = df['time'].iloc[-1]
 		df['date'] = int(now_time.timestamp())
-		stock_list = df['code'].values
+		stock_list = df['code'].values.tolist()
 		df = df.loc[:,['date','factor','open','high','low','close','volume','high_limit','low_limit','paused']]	
 		df.loc[:,['open','high','low','close','high_limit','low_limit']] = (df.loc[:,['open','high','low','close','high_limit','low_limit']]/df.loc[:,'factor'].values[:,np.newaxis]).round(2)
 		return df.values, stock_list, now_time
-
-
 
 
 

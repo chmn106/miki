@@ -4,9 +4,8 @@
 
 
 run_params = None # 运行参数
-redisCon = None # redis
 all_trade_days = None # 所有交易日
-display_name = None # 股票中文名，字典类型
+display_name = None # 股票中文名
 close_df = None
 factor_df = None
 highLimit_df = None

@@ -100,12 +100,12 @@ class Context(object):
 				self._portfolios[key].before_trading_start()
 			g.log.debug('{} run context before_trading_start !'.format(self.current_dt))
 
-	def onMinute(self, now_time):
+	def onData(self, now_time):
 		self.current_dt = now_time
 		self.close_series = g.close_df.loc[now_time,:].dropna()
 		factor_series = g.factor_df.loc[now_time.date(),:].dropna()
 		for key in self._portfolios:
-			self._portfolios[key].onMinute(self.close_series, factor_series, now_time)
+			self._portfolios[key].onData(self.close_series, factor_series, now_time)
 		self.valueHistory.append([now_time, self.total_value, self.close_series[self.run_params['beta']]])
 
 	def after_trading_end(self):
@@ -130,6 +130,7 @@ class Portfolio(object):
 		self.factor_series = None
 		self.now_time = None
 		self.types = types
+		self.run_count = False # 一天运行一次
 		self.order_cost = OrderCost(open_tax=0, 
 									close_tax=0.001, 
 									open_commission=0.0003, 
@@ -137,7 +138,6 @@ class Portfolio(object):
 									close_today_commission=0, 
 									min_commission=5)
 		self.slippage = PriceRelatedSlippage(0.0025)
-		self.run_count = False # 一天运行一次
 
 	def before_trading_start(self):
 		self.positions['closeable_amount'] = self.positions['amount']
@@ -145,7 +145,7 @@ class Portfolio(object):
 		self._preDayValue = self.total_value
 		self.run_count = False
 
-	def onMinute(self, close_series, factor_series, now_time):
+	def onData(self, close_series, factor_series, now_time):
 		if self.types=='stocks' and self.factor_series is not None and not self.run_count:
 			self.run_count = True
 			# 分红、送股、股票更名
@@ -207,11 +207,12 @@ class Portfolio(object):
 
 	def close(self, order):
 		code,price,amount,td_amount,side,multiplier,lever,commission,slipcost = order.security, order.price, order.amount, order.today_amount, order.side, order.multiplier, order.lever, order.commission, order.slipcost		
-		order_money = amount*price*multiplier
+		order_money = amount * price * multiplier
 		
 		location = (self.positions.index==code)&(self.positions.side==side)	
 		hold_amount,closeable_amount,today_amount,avg_cost = self.positions.loc[location,['amount','closeable_amount','today_amount','avg_cost']].iloc[-1]
-		self.positions.loc[location,['amount','closeable_amount','today_amount']] = hold_amount-amount, closeable_amount-amount, today_amount-td_amount
+		value = (hold_amount - amount) * price * multiplier * lever
+		self.positions.loc[location,['amount','value','closeable_amount','today_amount']] = hold_amount-amount, value, closeable_amount-amount, today_amount-td_amount
 		self.positions = self.positions[self.positions.amount>0]
 		profit = (price - avg_cost) * amount * multiplier * side
 		# 期货平仓计算盈亏
