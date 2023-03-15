@@ -1,8 +1,8 @@
 # miki  ![](https://img.shields.io/badge/license-MIT-blue) ![](https://img.shields.io/badge/miki-v2.0.1-blue)
 
 miki是一个开源量化框架，它具有以下特点
-+ 简单性： 代码采用python
-+ 优雅性： 框架简单，具体API阅读源码
++ 简单性： 完全采用python实现，简洁易读
++ 优雅性： 模块独立：数据、回测、实盘、下单
 + 拓展性： 支持股票、期货等
 
 ## 安装
@@ -111,7 +111,11 @@ if __name__ == '__main__':
 	s.run()
 
 ```
-## 交流
-QQ群：728708770
+## 版本更新
+    v1.0：初步回测框架的搭建；
+    v2.0：完善回测框架和数据框架的搭建；
+    v3.0：在原有框架基础上，进一步完善，同时添加自动化下单模块；
+## 开源社区交流
+    QQ群：1042883511
 ## License
 MIT License
